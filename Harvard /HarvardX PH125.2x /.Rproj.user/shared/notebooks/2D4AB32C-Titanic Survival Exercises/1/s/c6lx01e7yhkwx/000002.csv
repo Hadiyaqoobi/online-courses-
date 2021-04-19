@@ -1,0 +1,4 @@
+"0","params <- titanic %>%"
+"0","    filter(!is.na(Age)) %>%"
+"0","    summarize(mean = mean(Age), sd = sd(Age))"
+"0",""

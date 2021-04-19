@@ -1,0 +1,7 @@
+"0","library(NHANES)"
+"0","data(NHANES)"
+"0","NHANES %>%"
+"0","      filter(Gender == ""male"") %>%"
+"0","      group_by(AgeDecade) %>%"
+"0","      summarize(average = mean(BPSysAve, na.rm = TRUE), "
+"0","                standard_deviation = sd(BPSysAve, na.rm=TRUE))"

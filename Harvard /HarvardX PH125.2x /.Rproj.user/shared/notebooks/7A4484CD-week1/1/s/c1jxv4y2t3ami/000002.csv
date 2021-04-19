@@ -1,0 +1,2 @@
+"0","# plot distribution of exact heights in data"
+"0","plot(prop.table(table(x)), xlab = ""a = Height in inches"", ylab = ""Pr(x = a)"")"

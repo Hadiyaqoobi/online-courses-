@@ -1,0 +1,8 @@
+"0","library(dplyr)"
+"0","library(NHANES)"
+"0","data(NHANES)"
+"0","ref <- NHANES %>%"
+"0","  filter(AgeDecade == "" 20-29"" & Gender == ""female"") %>%"
+"0","  summarize(average = mean(BPSysAve, na.rm = TRUE), "
+"0","            standard_deviation = sd(BPSysAve, na.rm = TRUE))"
+"0","ref"

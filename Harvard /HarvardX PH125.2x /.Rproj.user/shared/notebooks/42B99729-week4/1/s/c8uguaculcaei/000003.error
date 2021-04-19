@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in gapminder %>% filter(country == \"United States\") %>% ggplot(aes(year,  : \n  could not find function \"%>%\"\n"}

@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in filter(gapminder, year %in% c(1962, 2012)) %>% ggplot(aes(fertility,  : \n  could not find function \"%>%\"\n"}

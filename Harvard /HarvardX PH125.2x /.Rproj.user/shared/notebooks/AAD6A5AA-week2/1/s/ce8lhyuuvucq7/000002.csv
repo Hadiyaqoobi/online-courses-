@@ -1,0 +1,19 @@
+"0","# define plots p1, p2, p3"
+"0","p <- heights %>% filter(sex == ""Male"") %>% ggplot(aes(x = height))"
+"0","p1 <- p + geom_histogram(binwidth = 1, fill = ""blue"", col = ""black"")"
+"0","p2 <- p + geom_histogram(binwidth = 2, fill = ""blue"", col = ""black"")"
+"0","p3 <- p + geom_histogram(binwidth = 3, fill = ""blue"", col = ""black"")"
+"0",""
+"0","# arrange plots next to each other in 1 row, 3 columns"
+"0","library(gridExtra)"
+"2","
+Attaching package: ‘gridExtra’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    combine
+
+"
+"0","grid.arrange(p1, p2, p3, ncol = 3)"
+"0",""

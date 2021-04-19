@@ -1,0 +1,8 @@
+"0","# basic scatterplot of life expectancy versus fertility"
+"0","ds_theme_set()    # set plot theme"
+"0","filter(gapminder, year == 1962) %>%"
+"0","    ggplot(aes(fertility, life_expectancy)) +"
+"0","    geom_point()"
+"2","Error in filter(gapminder, year == 1962) %>% ggplot(aes(fertility, life_expectancy)) : 
+  could not find function ""%>%""
+"

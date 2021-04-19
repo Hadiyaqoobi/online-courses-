@@ -1,0 +1,4 @@
+"0","# basic QQ-plot"
+"0","p <- heights %>% filter(sex == ""Male"") %>%"
+"0","    ggplot(aes(sample = height))"
+"0","p + geom_qq()"

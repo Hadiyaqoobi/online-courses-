@@ -1,0 +1,4 @@
+"0","gapminder_Africa_2010 %>% "
+"0","  ggplot(aes(dollars_per_day, infant_mortality, color = region, label = country)) +"
+"0","  geom_text() + "
+"0","  scale_x_continuous(trans = ""log2"")"

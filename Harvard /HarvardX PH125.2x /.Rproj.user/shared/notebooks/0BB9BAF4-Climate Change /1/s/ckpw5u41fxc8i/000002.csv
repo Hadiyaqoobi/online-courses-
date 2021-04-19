@@ -1,0 +1,7 @@
+"0"," p <- temp_carbon %>%"
+"0","    filter(!is.na(temp_anomaly)) %>%"
+"0","    ggplot(aes(year, temp_anomaly)) +"
+"0","    geom_line()"
+"0",""
+"0","p <- p + geom_hline(aes(yintercept = 0), col = ""blue"")"
+"0","p"

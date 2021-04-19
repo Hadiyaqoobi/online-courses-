@@ -1,0 +1,5 @@
+"0","p <- murders %>% ggplot(aes(population, total, label = abb, color = region)) +"
+"0","  geom_label()"
+"0","# add a layer to add title to the next line"
+"0","p + scale_x_log10() + "
+"0","    scale_y_log10()"

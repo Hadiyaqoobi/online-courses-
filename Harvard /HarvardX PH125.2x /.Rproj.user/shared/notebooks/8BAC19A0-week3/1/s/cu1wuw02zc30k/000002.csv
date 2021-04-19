@@ -1,0 +1,6 @@
+"0","library(tidyverse)"
+"0","library(dslabs)"
+"0","data(murders)"
+"0",""
+"0","murders <- murders %>% mutate(murder_rate = total/population*100000)"
+"0","summarize(murders, mean(murder_rate))"

@@ -1,0 +1,2 @@
+"0","p <- tab %>% ggplot(aes(x=year,y=life_expectancy,color=country)) + geom_line()"
+"0","p"

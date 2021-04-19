@@ -1,0 +1,7 @@
+"0",""
+"0","# compute median murder rate in 4 regions of country"
+"0","murders <- murders %>%"
+"0","    mutate(murder_rate = total/population * 100000)"
+"0","murders %>%"
+"0","    group_by(region) %>%"
+"0","    summarize(median_rate = median(murder_rate))"

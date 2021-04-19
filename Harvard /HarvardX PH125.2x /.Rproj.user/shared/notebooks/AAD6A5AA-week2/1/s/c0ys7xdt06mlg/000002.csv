@@ -1,0 +1,8 @@
+"0","# define average murder rate"
+"0","r <- murders %>%"
+"0","    summarize(rate = sum(total) / sum(population) * 10^6) %>%"
+"0","    pull(rate)"
+"0","    "
+"0","# basic line with average murder rate for the country"
+"0","p + geom_point(aes(col = region), size = 3) +"
+"0","    geom_abline(intercept = log10(r))    # slope is default of 1"

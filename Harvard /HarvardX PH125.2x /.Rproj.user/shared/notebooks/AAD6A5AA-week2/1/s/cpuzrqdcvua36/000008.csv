@@ -1,0 +1,4 @@
+"0","    "
+"0","# local aesthetics override global aesthetics"
+"0","p + geom_point(size = 3) +"
+"0","    geom_text(aes(x = 10, y = 800, label = ""Hello there!""))"

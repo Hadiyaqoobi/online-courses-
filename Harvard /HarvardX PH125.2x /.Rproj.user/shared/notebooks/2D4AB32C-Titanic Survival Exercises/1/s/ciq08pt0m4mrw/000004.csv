@@ -1,0 +1,5 @@
+"0","# barplot of passenger class filled by survival with position_fill"
+"0","titanic %>%"
+"0","    ggplot(aes(Pclass, fill = Survived)) +"
+"0","    geom_bar(position = position_fill()) +"
+"0","    ylab(""Proportion"")"

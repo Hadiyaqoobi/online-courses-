@@ -1,0 +1,5 @@
+"0","library(tidyverse)"
+"0","library(dslabs)"
+"0","data(stars)"
+"0","options(digits = 3)   # report 3 significant digits"
+"0",""

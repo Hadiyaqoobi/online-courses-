@@ -1,0 +1,9 @@
+"0",""
+"0","# scatterplot of US fertility by year"
+"0","gapminder %>%"
+"0","    filter(country == ""United States"") %>%"
+"0","    ggplot(aes(year, fertility)) +"
+"0","    geom_point()"
+"2","Error in gapminder %>% filter(country == ""United States"") %>% ggplot(aes(year,  : 
+  could not find function ""%>%""
+"

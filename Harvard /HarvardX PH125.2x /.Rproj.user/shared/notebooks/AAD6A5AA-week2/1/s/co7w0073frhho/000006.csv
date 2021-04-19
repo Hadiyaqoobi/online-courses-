@@ -1,0 +1,5 @@
+"0",""
+"0","# histogram with blue fill, black outline, labels and title"
+"0","p + geom_histogram(binwidth = 1, fill = ""blue"", col = ""black"") +"
+"0","    xlab(""Male heights in inches"") +"
+"0","    ggtitle(""Histogram"")"

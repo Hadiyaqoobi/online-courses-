@@ -1,0 +1,4 @@
+"0","    "
+"0","# add points layer to predefined ggplot object"
+"0","p <- ggplot(data = murders)"
+"0","p + geom_point(aes(population/10^6, total))"

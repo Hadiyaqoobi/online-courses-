@@ -1,0 +1,6 @@
+"0","co2_time <- historic_co2 %>%"
+"0","    ggplot(aes(year, co2, col = source)) +"
+"0","    geom_line() +"
+"0","    ggtitle(""Atmospheric CO2 concentration, -800,000 BC to today"") +"
+"0","    ylab(""co2 (ppmv)"")"
+"0","co2_time"

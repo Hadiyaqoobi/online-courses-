@@ -1,0 +1,8 @@
+"0","library(dslabs)"
+"0","data(heights)"
+"0","x <- heights$height"
+"0","length(unique(x))"
+"1","[1]"
+"1"," 139"
+"1","
+"

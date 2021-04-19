@@ -1,0 +1,2 @@
+"0","data(heights)"
+"0","p <- heights %>% ggplot()"

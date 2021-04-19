@@ -1,0 +1,8 @@
+"0","temp_carbon %>%"
+"0","    filter(!is.na(carbon_emissions)) %>%"
+"0","    .$year %>%"
+"0","    min()"
+"1","[1]"
+"1"," 1751"
+"1","
+"

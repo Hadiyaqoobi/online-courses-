@@ -1,0 +1,9 @@
+"0","library(ggplot2)"
+"0",""
+"0","# compare infant mortality in Sri Lanka and Turkey"
+"0","gapminder %>%"
+"0","    filter(year == 2015 & country %in% c(""Sri Lanka"", ""Turkey"")) %>%"
+"0","    select(country, infant_mortality)"
+"2","Error in gapminder %>% filter(year == 2015 & country %in% c(""Sri Lanka"",  : 
+  could not find function ""%>%""
+"

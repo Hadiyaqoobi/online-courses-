@@ -1,0 +1,3 @@
+"0",""
+"0","# arrange by region alphabetically, then by murder rate within each region"
+"0","murders %>% arrange(region, murder_rate) %>% head()"

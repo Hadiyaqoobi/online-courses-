@@ -1,0 +1,6 @@
+"0","          titanic %>%"
+"0","    filter(Fare > 0) %>%"
+"0","    ggplot(aes(Survived, Fare)) +"
+"0","    geom_boxplot() +"
+"0","    scale_y_continuous(trans = ""log2"") +"
+"0","    geom_jitter(alpha = 0.2)"

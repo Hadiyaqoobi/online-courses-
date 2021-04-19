@@ -1,0 +1,5 @@
+"0"," temp_carbon %>%"
+"0","    ggplot(aes(year, carbon_emissions)) +"
+"0","    geom_line() +"
+"0","    ylab(""Carbon emissions (metric tons)"") +"
+"0","    ggtitle(""Annual global carbon emissions, 1751-2014"")"

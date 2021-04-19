@@ -1,0 +1,3 @@
+"0",""
+"0","p<- murders %>% ggplot(aes(population, total, label = abb, color = region)) + geom_label()"
+"0","p + scale_x_log10() + scale_y_log10()"

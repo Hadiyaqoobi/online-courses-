@@ -1,0 +1,8 @@
+"0","# no error from this call"
+"0","p_test <- p + geom_text(aes(population/10^6, total, label = abb))"
+"0",""
+"0","# error - ""abb"" is not a globally defined variable and cannot be found outside of aes"
+"0","p_test <- p + geom_text(aes(population/10^6, total), label = abb)"
+"2","Error in layer(data = data, mapping = mapping, stat = stat, geom = GeomText,  : 
+  object 'abb' not found
+"

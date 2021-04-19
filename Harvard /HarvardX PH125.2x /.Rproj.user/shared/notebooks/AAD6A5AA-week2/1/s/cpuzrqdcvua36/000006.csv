@@ -1,0 +1,5 @@
+"0","    "
+"0","# simplify code by adding global aesthetic"
+"0","p <- murders %>% ggplot(aes(population/10^6, total, label = abb))"
+"0","p + geom_point(size = 3) +"
+"0","    geom_text(nudge_x = 1.5)"

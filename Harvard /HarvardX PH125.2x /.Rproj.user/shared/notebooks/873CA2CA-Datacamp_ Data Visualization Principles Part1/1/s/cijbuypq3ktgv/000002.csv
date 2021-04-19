@@ -1,0 +1,13 @@
+"0","library(dplyr)"
+"0","library(ggplot2)"
+"0","library(dslabs)"
+"0","library(RColorBrewer)"
+"0","data(us_contagious_diseases)"
+"0",""
+"0","us_contagious_diseases %>% filter(!is.na(population)) %>% "
+"0","  group_by(year, disease) %>%"
+"0","  summarize(rate = sum(count)/sum(population)*10000) %>%"
+"0","  ggplot(aes(year, rate, color = disease)) + "
+"0","  geom_line()"
+"2","`summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
+"

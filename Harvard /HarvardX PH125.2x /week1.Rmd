@@ -1,0 +1,130 @@
+---
+title: "1.1 Introduction to Data Visualization"
+output: html_notebook
+---
+```{r}
+library(dslabs)
+data(murders)
+head(murders)
+```
+Describe Heights to ET
+
+```{r}
+# load the dataset
+library(dslabs)
+data(heights)
+
+# make a table of category proportions
+prop.table(table(heights$sex))
+```
+The CDF is essential for calculating probabilities related to continuous data. In a continuous dataset, the probability of a specific exact value is not informative because most entries are unique. For example, in the student heights data, only one individual reported a height of 68.8976377952726 inches, but many students rounded similar heights to 69 inches. If we computed exact value probabilities, we would find that being exactly 69 inches is much more likely than being a non-integer exact height, which does not match our understanding that height is continuous. We can instead use the CDF to obtain a useful summary, such as the probability that a student is between 68.5 and 69.5 inches. 
+
+For datasets that are not normal, the CDF can be calculated manually by defining a function to compute the probability above. This function can then be applied to a range of values across the range of the dataset to calculate a CDF. Given a dataset my_data, the CDF can be calculated and plotted like this:
+
+```{r}
+a <- seq(min(my_data), max(my_data), length = 100)    # define range of values spanning the dataset
+cdf_function <- function(x) {    # computes prob. for a single value
+    mean(my_data <= x)
+}
+cdf_values <- sapply(a, cdf_function)
+plot(a, cdf_values)
+```
+Normal Distribution
+
+Equation for the normal distribution
+The normal distribution is mathematically defined by the following formula for any mean 𝜇 and standard deviation 𝜎:
+
+Pr(𝑎<𝑥<𝑏)=∫𝑏𝑎12𝜋√𝜎𝑒−12(𝑥−𝜇𝜎)2𝑑𝑥
+
+```{r}
+# define x as vector of male heights
+library(tidyverse)
+library(dslabs)
+data(heights)
+index <- heights$sex=="Male"
+x <- heights$height[index]
+
+# calculate the mean and standard deviation manually
+average <- sum(x)/length(x)
+SD <- sqrt(sum((x - average)^2)/length(x))
+
+# built-in mean and sd functions - note that the audio and printed values disagree
+average <- mean(x)
+SD <- sd(x)
+c(average = average, SD = SD)
+
+# calculate standard units
+z <- scale(x)
+
+# calculate proportion of values within 2 SD of mean
+mean(abs(z) < 2)
+
+```
+Note about the sd function
+The built-in R function sd() calculates the standard deviation, but it divides by length(x)-1 instead of length(x). When the length of the list is large, this difference is negligible and you can use the built-in sd() function. Otherwise, you should compute 𝜎 by hand. For this course series, assume that you should use the sd() function unless you are told not to do so.
+
+The Normal CDF and pnorm
+```{r}
+library(tidyverse)
+library(dslabs)
+data(heights)
+x <- heights %>% filter(sex=="Male") %>% pull(height)
+```
+
+We can estimate the probability that a male is taller than 70.5 inches with:
+
+```{r}
+1 - pnorm(70.5, mean(x), sd(x))
+
+```
+
+Code: Discretization and the normal approximation
+```{r}
+# plot distribution of exact heights in data
+plot(prop.table(table(x)), xlab = "a = Height in inches", ylab = "Pr(x = a)")
+
+# probabilities in actual data over length 1 ranges containing an integer
+mean(x <= 68.5) - mean(x <= 67.5)
+mean(x <= 69.5) - mean(x <= 68.5)
+mean(x <= 70.5) - mean(x <= 69.5)
+
+# probabilities in normal approximation match well
+pnorm(68.5, mean(x), sd(x)) - pnorm(67.5, mean(x), sd(x))
+pnorm(69.5, mean(x), sd(x)) - pnorm(68.5, mean(x), sd(x))
+pnorm(70.5, mean(x), sd(x)) - pnorm(69.5, mean(x), sd(x))
+
+# probabilities in actual data over other ranges don't match normal approx as well
+mean(x <= 70.9) - mean(x <= 70.1)
+pnorm(70.9, mean(x), sd(x)) - pnorm(70.1, mean(x), sd(x))
+```
+Quantile-Quantile Plots
+
+
+```{r}
+# define x and z
+library(tidyverse)
+library(dslabs)
+data(heights)
+index <- heights$sex=="Male"
+x <- heights$height[index]
+z <- scale(x)
+
+# proportion of data below 69.5
+mean(x <= 69.5)
+
+# calculate observed and theoretical quantiles
+p <- seq(0.05, 0.95, 0.05)
+observed_quantiles <- quantile(x, p)
+theoretical_quantiles <- qnorm(p, mean = mean(x), sd = sd(x))
+
+# make QQ-plot
+plot(theoretical_quantiles, observed_quantiles)
+abline(0,1)
+
+# make QQ-plot with scaled values
+observed_quantiles <- quantile(z, p)
+theoretical_quantiles <- qnorm(p)
+plot(theoretical_quantiles, observed_quantiles)
+abline(0,1)
+```
+

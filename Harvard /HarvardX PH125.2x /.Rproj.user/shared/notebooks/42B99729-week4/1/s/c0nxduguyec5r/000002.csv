@@ -1,0 +1,6 @@
+"0","# add dollars per day variable"
+"0","gapminder <- gapminder %>%"
+"0","    mutate(dollars_per_day = gdp/population/365)"
+"2","Error in gapminder %>% mutate(dollars_per_day = gdp/population/365) : 
+  could not find function ""%>%""
+"

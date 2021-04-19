@@ -1,0 +1,8 @@
+"0","library(dslabs)"
+"0","data(heights)"
+"0","x <- heights$height[heights$sex == ""Male""]"
+"0","mean(x > 69 & x <= 72)"
+"1","[1]"
+"1"," 0.3337438"
+"1","
+"

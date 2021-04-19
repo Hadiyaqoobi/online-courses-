@@ -1,0 +1,7 @@
+"0","# theme used for graphs in the textbook and course"
+"0","library(dslabs)"
+"0","ds_theme_set()"
+"0",""
+"0","# themes from ggthemes"
+"0","library(ggthemes)"
+"0","p + theme_economist()    # style of the Economist magazine"

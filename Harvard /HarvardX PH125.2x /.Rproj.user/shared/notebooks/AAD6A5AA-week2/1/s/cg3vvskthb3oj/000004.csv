@@ -1,0 +1,7 @@
+"0",""
+"0","# QQ-plot against a normal distribution with same mean/sd as data"
+"0","params <- heights %>%"
+"0","    filter(sex == ""Male"") %>%"
+"0","    summarize(mean = mean(height), sd = sd(height))"
+"0","    p + geom_qq(dparams = params) +"
+"0","    geom_abline()"

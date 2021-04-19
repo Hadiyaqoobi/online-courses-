@@ -1,0 +1,4 @@
+"0","library(tidyverse)"
+"0","library(dslabs)"
+"0","data(heights)"
+"0","x <- heights %>% filter(sex==""Male"") %>% pull(height)"

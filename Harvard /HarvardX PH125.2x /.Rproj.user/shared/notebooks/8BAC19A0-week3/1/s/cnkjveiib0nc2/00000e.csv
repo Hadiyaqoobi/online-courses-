@@ -1,0 +1,2 @@
+"0","# alternatively, can use the slice_max function"
+"0","murders %>% slice_max(murder_rate, n = 10)"

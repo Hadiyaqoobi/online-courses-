@@ -1,0 +1,3 @@
+"0","heights %>% "
+"0","  ggplot(aes(height, fill = sex)) + "
+"0","  geom_density(alpha = 0.2)"

@@ -1,0 +1,4 @@
+"0","# load and inspect gapminder data"
+"0","library(dslabs)"
+"0","data(gapminder)"
+"0","head(gapminder)"

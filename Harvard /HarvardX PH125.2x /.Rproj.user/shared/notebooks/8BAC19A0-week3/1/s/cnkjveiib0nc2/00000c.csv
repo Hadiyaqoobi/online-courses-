@@ -1,0 +1,5 @@
+"0",""
+"0","# show the top 10 states with highest murder rate, ordered by rate"
+"0","murders %>% arrange(desc(murder_rate)) %>% top_n(10)"
+"2","Selecting by murder_rate
+"

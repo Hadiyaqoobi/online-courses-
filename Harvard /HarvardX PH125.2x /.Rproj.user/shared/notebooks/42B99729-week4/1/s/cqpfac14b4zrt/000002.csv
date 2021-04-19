@@ -1,0 +1,8 @@
+"0","# facet by continent and year"
+"0","filter(gapminder, year %in% c(1962, 2012)) %>%"
+"0","    ggplot(aes(fertility, life_expectancy, col = continent)) +"
+"0","    geom_point() +"
+"0","    facet_grid(continent ~ year)"
+"2","Error in filter(gapminder, year %in% c(1962, 2012)) %>% ggplot(aes(fertility,  : 
+  could not find function ""%>%""
+"

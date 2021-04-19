@@ -1,0 +1,6 @@
+"0","    "
+"0","# efficient log scaling of the axes"
+"0","p + geom_point(size = 3) +"
+"0","    geom_text(nudge_x = 0.075) +"
+"0","    scale_x_log10() +"
+"0","    scale_y_log10()"

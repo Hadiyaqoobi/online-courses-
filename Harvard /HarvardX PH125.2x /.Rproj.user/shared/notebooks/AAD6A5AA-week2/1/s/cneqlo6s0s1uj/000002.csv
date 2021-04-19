@@ -1,0 +1,8 @@
+"0","p + geom_point(size = 3) +"
+"0","    geom_text(nudge_x = 0.075) +"
+"0","    scale_x_log10() +"
+"0","    scale_y_log10() +"
+"0","    xlab(""Population in millions (log scale)"") +"
+"0","    ylab(""Total number of murders (log scale)"") +"
+"0","    ggtitle(""US Gun Murders in 2010"")"
+"0",""

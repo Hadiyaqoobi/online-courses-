@@ -1,0 +1,4 @@
+"0",""
+"0","# color points by region"
+"0","p + geom_point(aes(col = region), size = 3)"
+"0",""

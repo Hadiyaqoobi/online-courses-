@@ -1,0 +1,5 @@
+"0",""
+"0","# add text layer to scatterplot"
+"0","p + geom_point(aes(population/10^6, total)) +"
+"0","    geom_text(aes(population/10^6, total, label = abb))"
+"0",""

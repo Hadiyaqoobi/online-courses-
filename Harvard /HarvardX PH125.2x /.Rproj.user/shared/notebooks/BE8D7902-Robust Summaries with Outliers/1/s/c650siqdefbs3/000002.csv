@@ -1,0 +1,7 @@
+"0","x_with_error <- x"
+"0","x_with_error[1] <- x_with_error[1]*10"
+"0","sd(x_with_error)- sd(x)"
+"1","[1]"
+"1"," 15.6746"
+"1","
+"

@@ -1,0 +1,8 @@
+"0","temp_carbon %>%"
+"0","    ggplot(aes(year, temp_anomaly)) +"
+"0","    geom_line() +"
+"0","    geom_line(aes(year, land_anomaly), col = ""red"") +"
+"0","    geom_line(aes(year, ocean_anomaly), col = ""blue"") +"
+"0","    ylab(""Temperature anomaly (degrees C)"") +"
+"0","    xlim(c(1880, 2018)) +"
+"0","    ggtitle(""Temperature anomaly on land and ocean"")"

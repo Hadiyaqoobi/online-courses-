@@ -1,0 +1,4 @@
+"0","#plot 3 - sex filled by survival"
+"0","titanic %>%"
+"0","    ggplot(aes(Sex, fill = Survived)) +"
+"0","    geom_bar()"

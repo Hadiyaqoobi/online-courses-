@@ -1,0 +1,2 @@
+"0","murders %>% ggplot(aes(population, total, label = abb, color = region)) +"
+"0","  geom_label()"

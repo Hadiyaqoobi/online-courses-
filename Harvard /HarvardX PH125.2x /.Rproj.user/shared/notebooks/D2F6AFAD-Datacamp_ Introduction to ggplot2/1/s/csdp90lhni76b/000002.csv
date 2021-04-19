@@ -1,0 +1,3 @@
+"0","p <- heights %>% "
+"0","  ggplot(aes(height))"
+"0","p + geom_histogram()"

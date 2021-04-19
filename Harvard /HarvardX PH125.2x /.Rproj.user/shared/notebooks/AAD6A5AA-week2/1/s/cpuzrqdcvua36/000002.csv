@@ -1,0 +1,4 @@
+"0",""
+"0","# change the size of the points"
+"0","p + geom_point(aes(population/10^6, total), size = 3) +"
+"0","    geom_text(aes(population/10^6, total, label = abb))"

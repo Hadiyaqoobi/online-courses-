@@ -1,0 +1,5 @@
+"0",""
+"0","# make QQ-plot with scaled values"
+"0","observed_quantiles <- quantile(z, p)"
+"0","theoretical_quantiles <- qnorm(p)"
+"0","plot(theoretical_quantiles, observed_quantiles)"

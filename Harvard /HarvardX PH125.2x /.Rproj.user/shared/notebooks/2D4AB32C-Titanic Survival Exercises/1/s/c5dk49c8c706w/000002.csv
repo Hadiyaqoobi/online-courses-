@@ -1,0 +1,5 @@
+"0","titanic %>%"
+"0","    filter(!is.na(Age)) %>%"
+"0","    ggplot(aes(sample = Age)) +"
+"0","    geom_qq(dparams = params) +"
+"0","    geom_abline()"

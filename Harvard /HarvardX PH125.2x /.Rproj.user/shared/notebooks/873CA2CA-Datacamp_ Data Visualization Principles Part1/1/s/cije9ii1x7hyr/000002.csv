@@ -1,0 +1,5 @@
+"0","murders %>% mutate(rate = total/population*100000) %>%"
+"0","  mutate(region=reorder(region, rate, FUN=median)) %>%"
+"0","  ggplot(aes(region, rate)) +"
+"0","  geom_boxplot() +"
+"0","  geom_point()"

@@ -1,0 +1,6 @@
+"0","# use pnorm to calculate the proportion over 7 feet (7*12 inches)"
+"0","1 - pnorm(7*12, 69, 3)"
+"1","[1]"
+"1"," 2.866516e-07"
+"1","
+"

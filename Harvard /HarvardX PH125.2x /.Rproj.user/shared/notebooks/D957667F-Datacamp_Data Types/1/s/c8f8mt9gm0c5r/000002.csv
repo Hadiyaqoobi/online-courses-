@@ -1,0 +1,4 @@
+"0","library(dslabs)"
+"0","data(heights)"
+"0","x <- heights$height"
+"0","tab <- table(x)"

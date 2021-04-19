@@ -1,0 +1,4 @@
+"0","# plot 2 - survival filled by sex with position_dodge"
+"0","titanic %>%"
+"0","    ggplot(aes(Survived, fill = Sex)) +"
+"0","    geom_bar(position = position_dodge())"

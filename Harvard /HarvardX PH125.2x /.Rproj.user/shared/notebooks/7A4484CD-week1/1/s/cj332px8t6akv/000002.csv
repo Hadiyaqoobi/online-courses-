@@ -1,0 +1,4 @@
+"0","a <- seq(min(my_data), max(my_data), length = 100)    # define range of values spanning the dataset"
+"2","Error in seq(min(my_data), max(my_data), length = 100) : 
+  object 'my_data' not found
+"

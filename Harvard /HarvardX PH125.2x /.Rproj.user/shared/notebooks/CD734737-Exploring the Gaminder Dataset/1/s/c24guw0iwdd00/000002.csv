@@ -1,0 +1,6 @@
+"0","library(dplyr)"
+"0","library(ggplot2)"
+"0","library(dslabs)"
+"0","data(gapminder)"
+"0","gapminder %>% filter(year >= 1960 & year <= 2010 & country == ""Cambodia"") %>% "
+"0","  ggplot(aes(year, life_expectancy)) + geom_line()"

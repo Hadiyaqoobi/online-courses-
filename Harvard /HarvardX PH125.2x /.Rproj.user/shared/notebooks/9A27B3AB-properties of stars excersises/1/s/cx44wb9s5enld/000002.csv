@@ -1,0 +1,6 @@
+"0","stars %>%"
+"0","    ggplot(aes(log10(temp), magnitude)) +"
+"0","    geom_point() +"
+"0","    geom_text(aes(label = star)) +"
+"0","    scale_x_reverse() +"
+"0","    scale_y_reverse()"

@@ -1,0 +1,4 @@
+"0","    "
+"0","# move text labels slightly to the right"
+"0","p + geom_point(aes(population/10^6, total), size = 3) +"
+"0","    geom_text(aes(population/10^6, total, label = abb), nudge_x = 1)"

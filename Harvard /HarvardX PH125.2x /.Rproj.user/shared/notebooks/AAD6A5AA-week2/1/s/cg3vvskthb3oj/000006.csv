@@ -1,0 +1,7 @@
+"0","    "
+"0","# QQ-plot of scaled data against the standard normal distribution"
+"0","heights %>%"
+"0","    ggplot(aes(sample = scale(height))) +"
+"0","    geom_qq() +"
+"0","    geom_abline()"
+"0",""

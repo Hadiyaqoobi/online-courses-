@@ -1,0 +1,3 @@
+"0",""
+"0","# arrange by murder rate, smallest to largest"
+"0","murders %>% arrange(murder_rate) %>% head()"

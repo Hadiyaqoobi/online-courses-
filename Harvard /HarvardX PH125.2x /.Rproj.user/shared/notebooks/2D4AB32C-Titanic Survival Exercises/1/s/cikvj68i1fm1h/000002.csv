@@ -1,0 +1,3 @@
+"0","titanic %>%"
+"0","    ggplot(aes(Age, y = ..count.., fill = Sex)) +"
+"0","    geom_density(alpha = 0.2, position = ""stack"")"

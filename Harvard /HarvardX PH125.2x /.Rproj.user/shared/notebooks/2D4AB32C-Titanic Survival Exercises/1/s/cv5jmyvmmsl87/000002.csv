@@ -1,0 +1,4 @@
+"0","titanic %>%"
+"0","    ggplot(aes(Age, y = ..count.., fill = Survived)) +"
+"0","    geom_density(position = ""stack"") +"
+"0","    facet_grid(Sex ~ Pclass)"

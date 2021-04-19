@@ -1,0 +1,222 @@
+---
+title: "Assessment: Introduction to ggplot2"
+output: html_notebook
+---
+
+Exercise 1. ggplot2 basics
+Start by loading the dplyr and ggplot2 libraries as well as the murders data.
+
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(murders)
+Note that you can load both dplyr and ggplot2, as well as other packages, by installing and loading the tidyverse package.
+
+With ggplot2 plots can be saved as objects. For example we can associate a dataset with a plot object like this
+
+p <- ggplot(data = murders)
+Because data is the first argument we don't need to spell it out. So we can write this instead:
+
+p <- ggplot(murders)
+or, if we load dplyr, we can use the pipe:
+
+p <- murders %>% ggplot()
+Remember the pipe sends the object on the left of %>% to be the first argument for the function the right of %>%.
+
+Now let's get an introduction to ggplot.
+```{r}
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(heights)
+data(murders)
+p <- ggplot(murders)
+class(p)
+```
+Exercise 3. Pipes
+Now we are going to review the use of pipes by seeing how they can be used with ggplot.
+
+```{r}
+data(heights)
+p <- heights %>% ggplot()
+```
+Exercise 5. geom_point 1
+To create a scatter plot, we add a layer with the function geom_point. The aesthetic mappings require us to define the x-axis and y-axis variables respectively. So the code looks like this:
+
+murders %>% ggplot(aes(x = , y = )) +
+  geom_point()
+except we have to fill in the blanks to define the two variables x and y.
+
+```{r}
+murders %>% ggplot(aes(x = population, y = total)) +
+  geom_point()
+```
+Exercise 6. geom_point 2
+Note that if we don't use argument names, we can obtain the same plot by making sure we enter the variable names in the desired order:
+
+murders %>% ggplot(aes(population, total)) +
+  geom_point()
+  
+```{r}
+murders %>% ggplot(aes(total, population)) +
+  geom_point()
+```
+  Exercise 8. geom_point text
+You can also add labels to the points on a plot.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(heights)
+data(murders)
+murders %>% ggplot(aes(population, total, label = abb)) +
+  geom_label()
+```
+Exercise 10. geom_point colors 2
+Now let's go ahead and make the labels blue. We previously wrote this code to add labels to our plot:
+
+murders %>% ggplot(aes(population, total, label= abb)) +
+  geom_label()
+Now we will edit this code.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(murders)
+murders %>% ggplot(aes(population, total, label = abb)) +
+  geom_label(color = "blue")
+```
+Exercise 12. geom_label colors
+We previously used this code to make a plot using the state abbreviations as labels:
+
+murders %>% ggplot(aes(population, total, label = abb)) +
+  geom_label()
+We are now going to add color to represent the region.
+
+```{r}
+murders %>% ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label()
+```
+Exercise 13. Log-scale
+Now we are going to change the axes to log scales to account for the fact that the population distribution is skewed. Let's start by defining an object p that holds the plot we have made up to now:
+
+p <- murders %>% ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label() 
+To change the x-axis to a log scale we learned about the scale_x_log10() function. We can change the axis by adding this layer to the object p to change the scale and render the plot using the following code:
+
+p + scale_x_log10()
+
+```{r}
+
+p<- murders %>% ggplot(aes(population, total, label = abb, color = region)) + geom_label()
+p + scale_x_log10() + scale_y_log10()
+```
+Exercise 14. Titles
+In the previous exercises we created a plot using the following code:
+
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(murders)
+p<- murders %>% ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label()
+p + scale_x_log10() + scale_y_log10()
+We are now going to add a title to this plot. We will do this by adding yet another layer, this time with the function ggtitle.
+
+```{r}
+p<- murders %>% ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label()
+p + scale_x_log10() +
+  scale_y_log10() + 
+  ggtitle("Gun murder data")
+```
+Exercise 16. A second example
+We are now going to make a histogram of the heights so we will load the heights dataset. The following code has been pre-run for you to load the heights dataset:
+
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(heights)
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(heights)
+p <- heights %>% 
+  ggplot(aes(height))
+```
+
+Exercise 17. Histograms 2
+Now we are ready to add a layer to actually make the histogram.
+
+
+```{r}
+p <- heights %>% 
+  ggplot(aes(height))
+p + geom_histogram()
+```
+Exercise 18. Histogram binwidth
+Note that when we run the code from the previous exercise we get the following warning:
+
+stat_bin() using bins = 30. Pick better value with binwidth.
+
+```{r}
+p <- heights %>% 
+  ggplot(aes(height))
+p + geom_histogram(binwidth = 1)
+```
+
+Exercise 19. Smooth density plot
+Now instead of a histogram we are going to make a smooth density plot. In this case, we will not make an object p. Instead we will render the plot using a single line of code. In the previous exercise, we could have created a histogram using one line of code like this:
+
+heights %>% 
+  ggplot(aes(height)) +
+  geom_histogram()
+Now instead of geom_histogram we will use geom_density to create a smooth density plot.
+
+```{r}
+heights %>% 
+  ggplot(aes(height)) + 
+  geom_density()
+```
+Exercise 20. Two smooth density plots
+Now we are going to make density plots for males and females separately. We can do this using the group argument within the aes mapping. Because each point will be assigned to a different density depending on a variable from the dataset, we need to map within aes.
+
+```{r}
+heights %>% 
+  ggplot(aes(height, group = sex)) + 
+  geom_density()
+```
+Exercise 21. Two smooth density plots 2
+In the previous exercise we made the two density plots, one for each sex, using:
+
+heights %>% 
+  ggplot(aes(height, group = sex)) + 
+  geom_density()
+We can also assign groups through the color or fill argument. For example, if you type color = sex ggplot knows you want a different color for each sex. So two densities must be drawn. You can therefore skip the group = sex mapping. Using color has the added benefit that it uses color to distinguish the groups.
+
+
+```{r}
+heights %>% 
+  ggplot(aes(height, color = sex)) + 
+  geom_density() 
+```
+Exercise 22. Two smooth density plots 3
+We can also assign groups using the fill argument. When using the geom_density geometry, color creates a colored line for the smooth density plot while fill colors in the area under the curve.
+
+We can see what this looks like by running the following code:
+
+heights %>% 
+  ggplot(aes(height, fill = sex)) + 
+  geom_density() 
+However, here the second density is drawn over the other. We can change this by using something called alpha blending.
+
+```{r}
+heights %>% 
+  ggplot(aes(height, fill = sex)) + 
+  geom_density(alpha = 0.2)
+```
+

@@ -1,0 +1,6 @@
+"0","library(dplyr)"
+"0","library(dslabs)"
+"0","data(gapminder)"
+"0","years <- 1960:2010"
+"0","countries <- c(""United States"", ""Vietnam"")"
+"0","tab <- gapminder %>% filter(year %in% years & country %in% countries)"
