@@ -1,0 +1,5 @@
+"0","B <- 10000"
+"0","losses <- replicate(B, {"
+"0","    defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE) "
+"0","  sum(defaults * loss_per_foreclosure)"
+"0","})"

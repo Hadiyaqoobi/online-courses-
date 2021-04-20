@@ -1,0 +1,176 @@
+---
+title: "4.1 The Big Short"
+output: html_notebook
+---
+
+Correction
+At 2:35, the displayed results of the code are incorrect. Here are the correct values:
+
+n*(p*loss_per_foreclosure + (1-p)*0)
+[1] -4e+06
+sqrt(n)*abs(loss_per_foreclosure)*sqrt(p*(1-p))
+[1] 885438
+Key points
+Interest rates for loans are set using the probability of loan defaults to calculate a rate that minimizes the probability of losing money.
+We can define the outcome of loans as a random variable. We can also define the sum of outcomes of many loans as a random variable.
+The Central Limit Theorem can be applied to fit a normal distribution to the sum of profits over many loans. We can use properties of the normal distribution to calculate the interest rate needed to ensure a certain probability of losing money for a given probability of default.
+
+Code: Interest rate sampling model
+
+```{r}
+n <- 1000
+loss_per_foreclosure <- -200000
+p <- 0.02
+defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE)
+sum(defaults * loss_per_foreclosure)
+```
+
+Code: Interest rate Monte Carlo simulation
+
+```{r}
+B <- 10000
+losses <- replicate(B, {
+    defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE) 
+  sum(defaults * loss_per_foreclosure)
+})
+```
+
+Code: Plotting expected losses
+
+
+```{r}
+library(tidyverse)
+data.frame(losses_in_millions = losses/10^6) %>%
+    ggplot(aes(losses_in_millions)) +
+    geom_histogram(binwidth = 0.6, col = "black")
+```
+
+Code: Expected value and standard error of the sum of 1,000 loans
+```{r}
+n*(p*loss_per_foreclosure + (1-p)*0)    # expected value 
+sqrt(n)*abs(loss_per_foreclosure)*sqrt(p*(1-p))    # standard error
+```
+Code: Calculating interest rates for expected value of 0
+We can calculate the amount 𝑥 to add to each loan so that the expected value is 0 using the equation 𝑙𝑝+𝑥(1−𝑝)=0. Note that this equation is the definition of expected value given a loss per foreclosure 𝑙 with foreclosure probability 𝑝 and profit 𝑥 if there is no foreclosure (probability 1−𝑝).
+
+We solve for 𝑥=−𝑙𝑝1−𝑝 and calculate 𝑥:
+
+```{r}
+x = - loss_per_foreclosure*p/(1-p)
+x
+```
+
+On a $180,000 loan, this equals an interest rate of:
+
+```{r}
+x/180000
+
+```
+
+Equations: Calculating interest rate for 1% probability of losing money
+We want to calculate the value of 𝑥 for which Pr(𝑆<0)=0.01. The expected value E[𝑆] of the sum of 𝑛=1000 loans given our definitions of 𝑥, 𝑙 and 𝑝 is:
+
+𝜇𝑆=(𝑙𝑝+𝑥(1−𝑝))∗𝑛
+And the standard error of the sum of 𝑛 loans, SE[𝑆], is:
+
+𝜎𝑆=∣𝑥−𝑙∣𝑛𝑝(1−𝑝)‾‾‾‾‾‾‾‾‾√
+Because we know the definition of a Z-score is 𝑍=𝑥−𝜇𝜎, we know that Pr(𝑆<0)=Pr(𝑍<−𝜇𝜎). Thus, Pr(𝑆<0)=0.01 equals:
+
+Pr(𝑍<−{𝑙𝑝+𝑥(1−𝑝)}𝑛(𝑥−𝑙)𝑛𝑝(1−𝑝)‾‾‾‾‾‾‾‾‾√)=0.01
+z<-qnorm(0.01) gives us the value of 𝑧 for which Pr(𝑍≤𝑧)=0.01, meaning:
+
+𝑧=−{𝑙𝑝+𝑥(1−𝑝)}𝑛(𝑥−𝑙)𝑛𝑝(1−𝑝)‾‾‾‾‾‾‾‾‾√
+Solving for 𝑥 gives:
+
+𝑥=−𝑙𝑛𝑝−𝑧𝑛𝑝(1−𝑝)‾‾‾‾‾‾‾‾‾√𝑛(1−𝑝)+𝑧𝑛𝑝(1−𝑝)‾‾‾‾‾‾‾‾‾√
+Code: Calculating interest rate for 1% probability of losing money
+
+```{r}
+l <- loss_per_foreclosure
+z <- qnorm(0.01)
+x <- -l*( n*p - z*sqrt(n*p*(1-p)))/ ( n*(1-p) + z*sqrt(n*p*(1-p)))\x
+x/180000    # interest rate
+loss_per_foreclosure*p + x*(1-p)    # expected value of the profit per loan
+n*(loss_per_foreclosure*p + x*(1-p)) # expected value of the profit over n loans
+```
+Code: Monte Carlo simulation for 1% probability of losing money
+Note that your results will vary from the video because the seed is not set.
+
+```{r}
+B <- 100000
+profit <- replicate(B, {
+    draws <- sample( c(x, loss_per_foreclosure), n, 
+                        prob=c(1-p, p), replace = TRUE) 
+    sum(draws)
+})
+mean(profit)    # expected value of the profit over n loans
+mean(profit<0)    # probability of losing money
+```
+
+
+Code: Expected value with higher default rate and interest rate
+
+```{r}
+p <- .04
+loss_per_foreclosure <- -200000
+r <- 0.05
+x <- r*180000
+loss_per_foreclosure*p + x*(1-p)
+```
+
+Equations: Probability of losing money
+We can define our desired probability of losing money, 𝑧, as:
+
+Pr(𝑆<0)=Pr(𝑍<−E[𝑆]SE[𝑆])=𝑃𝑟(𝑍<𝑧)
+If 𝜇 is the expected value of the urn (one loan) and 𝜎 is the standard deviation of the urn (one loan), then E[𝑆]=𝑛𝜇 and SE[𝑆]=𝑛√𝜎.
+
+As in the previous video, we define the probability of losing money 𝑧=0.01. In the first equation, we can see that:
+
+𝑧=−E[𝑆]SE[𝑆]
+It follows that:
+
+𝑧=−𝑛𝜇𝑛√𝜎=−𝑛√𝜇𝜎
+To find the value of 𝑛 for which 𝑧 is less than or equal to our desired value, we take 𝑧≤−𝑛√𝜇𝜎 and solve for 𝑛:
+
+𝑛≥𝑧2𝜎2𝜇2
+Code: Calculating number of loans for desired probability of losing money
+
+
+```{r}
+z <- qnorm(0.01)
+l <- loss_per_foreclosure
+n <- ceiling((z^2*(x-l)^2*p*(1-p))/(l*p + x*(1-p))^2)
+n    # number of loans required
+n*(loss_per_foreclosure*p + x * (1-p))    # expected profit over n loans
+```
+Code: Monte Carlo simulation with known default probability
+This Monte Carlo simulation estimates the expected profit given a known probability of default 𝑝=0.04. Note that your results will differ from the video because the seed is not set.
+
+```{r}
+B <- 10000
+p <- 0.04
+x <- 0.05 * 180000
+profit <- replicate(B, {
+    draws <- sample( c(x, loss_per_foreclosure), n, 
+                        prob=c(1-p, p), replace = TRUE) 
+    sum(draws)
+})
+mean(profit)
+```
+Code: Monte Carlo simulation with unknown default probability
+This Monte Carlo simulation estimates the expected profit given an unknown probability of default 0.03≤𝑝≤0.05, modeling the situation where an event changes the probability of default for all borrowers simultaneously. Note that your results will differ from the video because the seed is not set.
+
+```{r}
+p <- 0.04
+x <- 0.05*180000
+profit <- replicate(B, {
+    new_p <- 0.04 + sample(seq(-0.01, 0.01, length = 100), 1)
+    draws <- sample( c(x, loss_per_foreclosure), n, 
+                        prob=c(1-new_p, new_p), replace = TRUE)
+    sum(draws)
+})
+mean(profit)    # expected profit
+mean(profit < 0)    # probability of losing money
+mean(profit < -10000000)    # probability of losing over $10 million
+```
+
