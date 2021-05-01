@@ -1,0 +1,56 @@
+---
+title: "DataCamp Assessment 1.1: Parameters and Estimates"
+output: html_notebook
+---
+Exercise 5. se versus p
+Write a line of code that calculates the standard error se of a sample average when you poll 25 people in the population. Generate a sequence of 100 proportions of Democrats p that vary from 0 (no Democrats) to 1 (all Democrats).
+
+Plot se versus p for the 100 different proportions.
+
+```{r}
+# `N` represents the number of people polled
+N <- 25
+
+# Create a variable `p` that contains 100 proportions ranging from 0 to 1 using the `seq` function
+p <- seq(0, 1, length = 100)
+
+# Create a variable `se` that contains the standard error of each sample average
+se <- sqrt(p*(1-p)/N)
+
+# Plot `p` on the x-axis and `se` on the y-axis
+plot(p, se)
+```
+Exercise 6. Multiple plots of se versus p
+Using the same code as in the previous exercise, create a for-loop that generates three plots of p versus se when the sample sizes equal N=25 ,N=100 , and . N = 1000
+
+```{r}
+# The vector `p` contains 100 proportions of Democrats ranging from 0 to 1 using the `seq` function
+p <- seq(0, 1, length = 100)
+
+# The vector `sample_sizes` contains the three sample sizes
+sample_sizes <- c(25, 100, 1000)
+
+# Write a for-loop that calculates the standard error `se` for every value of `p` for each of the three samples sizes `N` in the vector `sample_sizes`. Plot the three graphs, using the `ylim` argument to standardize the y-axis across all three plots.
+for(N in sample_sizes){
+  se <- sqrt(p*(1-p)/N)
+  plot(p, se, ylim = c(0,0.5/sqrt(25)))
+}
+```
+
+Exercise 9. Standard error of the spread
+Say the actual proportion of Democratic voters is . In this case, the Republican party is winning by a relatively large margin of , or a 10% margin of victory. What is the standard error of the spread 
+ in this case?
+ 
+```{r}
+# `N` represents the number of people polled
+N <- 25
+
+# `p` represents the proportion of Democratic voters
+p <- 0.45
+
+# Calculate the standard error of the spread. Print this value to the console.
+2*sqrt(p*(1-p)/N)
+
+
+```
+ 

@@ -1,0 +1,6 @@
+"0","brexit_polls <- brexit_polls %>%"
+"0","        mutate(x_hat = __________)"
+"2","Error: unexpected input in:
+""brexit_polls <- brexit_polls %>%
+        mutate(x_hat = _""
+"

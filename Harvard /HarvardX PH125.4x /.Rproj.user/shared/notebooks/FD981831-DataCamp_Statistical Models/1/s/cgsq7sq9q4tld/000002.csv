@@ -1,0 +1,10 @@
+"0","# Load the 'dslabs' package and data contained in 'heights'"
+"0","library(dslabs)"
+"0","data(heights)"
+"0",""
+"0","# Make a vector of heights from all males in the population"
+"0","x <- heights %>% filter(sex == ""Male"") %>%"
+"0","  .$height"
+"2","Error in heights %>% filter(sex == ""Male"") %>% .$height : 
+  could not find function ""%>%""
+"

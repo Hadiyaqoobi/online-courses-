@@ -1,0 +1,6 @@
+"0","    "
+"0","combined_by_type <- june_polls %>%"
+"0","        group_by(poll_type) %>%"
+"0","        summarize(N = sum(samplesize),"
+"0","                  spread = sum(spread*samplesize)/N,"
+"0","                  p_hat = (spread + 1)/2)"

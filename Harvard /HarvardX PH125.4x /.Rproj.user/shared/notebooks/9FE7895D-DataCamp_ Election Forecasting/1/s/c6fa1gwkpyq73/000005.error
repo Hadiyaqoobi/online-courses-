@@ -1,0 +1,1 @@
+{"frames":[{"func":"p_hits %>% mutate(state = reorder(state, proportion_hits)) %>% \n    ggplot(aes(state, proportion_hits))","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in ggplot(., aes(state, proportion_hits)) : \n  could not find function \"ggplot\"\n"}

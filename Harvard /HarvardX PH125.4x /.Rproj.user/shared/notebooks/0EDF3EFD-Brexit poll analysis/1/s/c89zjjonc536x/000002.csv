@@ -1,0 +1,7 @@
+"0","  combined_by_type %>%"
+"0","    filter(poll_type == ""Online"") %>%"
+"0","    pull(spread_upper)"
+"1","[1]"
+"1"," 0.00165"
+"1","
+"

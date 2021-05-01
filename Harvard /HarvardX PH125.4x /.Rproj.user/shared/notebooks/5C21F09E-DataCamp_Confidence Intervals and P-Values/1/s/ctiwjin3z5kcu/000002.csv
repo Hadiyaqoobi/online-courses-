@@ -1,0 +1,8 @@
+"0","# Load the data"
+"0","data(""polls_us_election_2016"")"
+"0",""
+"0","# Generate an object `polls` that contains data filtered for polls that ended on or after October 31, 2016 in the United States"
+"0","polls <- polls_us_election_2016 %>% filter(enddate >= ""2016-10-31"" & state == ""U.S."") "
+"2","Error in polls_us_election_2016 %>% filter(enddate >= ""2016-10-31"" & state ==  : 
+  could not find function ""%>%""
+"

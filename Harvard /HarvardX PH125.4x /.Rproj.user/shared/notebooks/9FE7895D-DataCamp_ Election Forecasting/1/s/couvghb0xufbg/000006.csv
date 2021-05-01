@@ -1,0 +1,7 @@
+"0","# Create an object called `errors` that calculates the difference between the predicted and actual spread and indicates if the correct winner was predicted"
+"0","errors <- cis %>% mutate(error = spread - actual_spread, hit = sign(spread) == sign(actual_spread))"
+"2","Error: Problem with `mutate()` input `error`.
+[31mx[39m object 'actual_spread' not found
+[34mℹ[39m Input `error` is `spread - actual_spread`.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"

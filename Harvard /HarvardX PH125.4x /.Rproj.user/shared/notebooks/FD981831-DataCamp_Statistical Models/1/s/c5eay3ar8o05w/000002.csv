@@ -1,0 +1,9 @@
+"0","# These lines of code filter for the polls we want and calculate the spreads"
+"0","polls <- polls_us_election_2016 %>% "
+"0","  filter(pollster %in% c(""Rasmussen Reports/Pulse Opinion Research"",""The Times-Picayune/Lucid"") &"
+"0","           enddate >= ""2016-10-15"" &"
+"0","           state == ""U.S."") %>% "
+"0","  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100) "
+"2","Error in polls_us_election_2016 %>% filter(pollster %in% c(""Rasmussen Reports/Pulse Opinion Research"",  : 
+  could not find function ""%>%""
+"

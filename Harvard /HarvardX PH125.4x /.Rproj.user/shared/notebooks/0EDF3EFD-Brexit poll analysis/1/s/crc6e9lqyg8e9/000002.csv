@@ -1,0 +1,8 @@
+"0","june_polls <- brexit_polls %>%"
+"0","              filter(enddate >= ""2016-06-01"")"
+"0","    nrow(june_polls)"
+"1","[1]"
+"1"," 32"
+"1","
+"
+"0","        "

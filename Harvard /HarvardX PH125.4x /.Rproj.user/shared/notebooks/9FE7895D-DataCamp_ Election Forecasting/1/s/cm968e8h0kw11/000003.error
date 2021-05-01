@@ -1,0 +1,1 @@
+{"frames":[{"func":"errors %>% filter(grade %in% c(\"A+\", \"A\", \"A-\", \"B+\") | is.na(grade)) %>% \n    mutate(state = reorder(state, error)) %>% ggplot(aes(state, \n    error))","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in ggplot(., aes(state, error)) : could not find function \"ggplot\"\n"}

@@ -1,0 +1,9 @@
+"0",""
+"0","# Make a barplot of the proportion of hits for each state"
+"0","p_hits %>% mutate(state = reorder(state, proportion_hits)) %>%"
+"0","  ggplot(aes(state, proportion_hits)) + "
+"0","  geom_bar(stat = ""identity"") +"
+"0","  coord_flip()"
+"2","Error in ggplot(., aes(state, proportion_hits)) : 
+  could not find function ""ggplot""
+"

@@ -1,0 +1,3 @@
+"0","brexit_long <- brexit_polls %>%"
+"0","    gather(vote, proportion, ""remain"":""undecided"") %>%"
+"0","    mutate(vote = factor(vote))"

@@ -1,0 +1,7 @@
+"0","june_polls <- june_polls %>%"
+"0","    mutate(hit = (2*p-1 > ci_lower_spread) & (2*p-1 < ci_upper_spread))"
+"0","    mean(june_polls$hit)"
+"1","[1]"
+"1"," 0.562"
+"1","
+"

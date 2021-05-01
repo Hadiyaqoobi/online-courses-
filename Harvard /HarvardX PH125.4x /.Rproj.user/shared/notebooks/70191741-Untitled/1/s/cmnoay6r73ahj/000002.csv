@@ -1,0 +1,4 @@
+"0","# The 'totals' data have already been loaded. Examine them using the `head` function."
+"0","head(totals)"
+"2","Error in head(totals) : object 'totals' not found
+"

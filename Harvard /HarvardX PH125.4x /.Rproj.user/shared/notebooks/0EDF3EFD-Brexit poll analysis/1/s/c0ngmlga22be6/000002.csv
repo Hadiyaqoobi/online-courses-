@@ -1,0 +1,7 @@
+"0","          brexit_chisq <- table(brexit_hit$poll_type, brexit_hit$hit)"
+"0","chisq.test(brexit_chisq)$p.value"
+"1","[1]"
+"1"," 0.00101"
+"1","
+"
+"0","        "

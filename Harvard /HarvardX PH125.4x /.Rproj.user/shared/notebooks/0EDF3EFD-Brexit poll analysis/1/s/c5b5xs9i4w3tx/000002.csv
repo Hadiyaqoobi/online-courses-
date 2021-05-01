@@ -1,0 +1,7 @@
+"0","brexit_hit <- brexit_polls %>%"
+"0","  mutate(p_hat = (spread + 1)/2,"
+"0","         se_spread = 2*sqrt(p_hat*(1-p_hat)/samplesize),"
+"0","         spread_lower = spread - qnorm(.975)*se_spread,"
+"0","         spread_upper = spread + qnorm(.975)*se_spread,"
+"0","         hit = spread_lower < -0.038 & spread_upper > -0.038) %>%"
+"0","  select(poll_type, hit)"

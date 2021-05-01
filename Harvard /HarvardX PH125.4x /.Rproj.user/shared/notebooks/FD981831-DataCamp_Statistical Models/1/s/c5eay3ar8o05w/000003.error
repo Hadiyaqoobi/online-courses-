@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in polls_us_election_2016 %>% filter(pollster %in% c(\"Rasmussen Reports/Pulse Opinion Research\",  : \n  could not find function \"%>%\"\n"}
