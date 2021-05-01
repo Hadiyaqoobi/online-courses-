@@ -1,0 +1,700 @@
+---
+title: "Batch Effects"
+output: html_notebook
+---
+Confounding Exercises
+
+
+Homework due May 13, 2021 23:01 +03
+Install the latest version of the dagdata packge from the genomicsclass github repository. Load the admissions data from the dagdata package:
+
+```{r}
+library(dagdata)
+data(admissions)
+```
+Familiarize yourself with this table:
+
+```{r}
+print( admissions )
+
+```
+Confounding Exercises #1
+1 point possible (graded)
+Let's compute the proportion of men who were accepted:
+
+```{r}
+index = which(admissions$Gender==1)
+accepted= sum(admissions$Number[index] * admissions$Percent[index]/100)
+applied = sum(admissions$Number[index])
+accepted/applied
+```
+What is the proportion of women that were accepted?
+
+Answer code
+
+```{r}
+index = which(admissions$Gender==0)
+accepted= sum(admissions$Number[index] * admissions$Percent[index]/100)
+applied = sum(admissions$Number[index])
+accepted/applied
+```
+Confounding Exercises #2
+1 point possible (graded)
+Now that we have observed different acceptance rates between genders, test for the significance of this result.
+
+If you perform a chi-square independence test, what is the p-value?
+
+Answer code
+
+```{r}
+index = admissions$Gender==1
+men = admissions[index,]
+women = admissions[!index,]
+menYes = sum(men$Number*men$Percent/100)
+menNo = sum(men$Number*(1-men$Percent/100))
+womenYes = sum(women$Number*women$Percent/100)
+womenNo = sum(women$Number*(1-women$Percent/100))
+tab = matrix(c(menYes,womenYes,menNo,womenNo),2,2)
+chisq.test(tab)$p.value
+```
+
+This difference actually led to a lawsuit.
+
+Now notice that looking at the data by major, the differences disappear.
+
+```{r}
+index = admissions$Gender==1
+men = admissions[index,]
+women = admissions[!index,]
+print( data.frame( major=admissions[1:6,1],men=men[,3], women=women[,3]) )
+```
+
+How can this be? This is referred to as Simpson's Paradox.
+
+In the following questions we will try to decipher why this is happening.
+
+
+
+
+Confounding Exercises #3
+1 point possible (graded)
+We can quantify how "hard" a major is using the percent of students that were accepted. Compute the percent that were accepted (regardless of gender) to each major and call this vector H.
+
+Which is the hardest major?
+
+Answer code
+
+```{r}
+major = admissions[1:6,1]
+men = admissions[1:6,]
+women =admissions[7:12,]
+H = (men$Number*men$Percent/100 + women$Number*women$Percent/100) / (men$Number+women$Number)
+major[which.min(H)]
+```
+Confounding Exercises #4
+1 point possible (graded)
+What proportion of students is admitted for the hardest major from Confounding Exercises #3?
+
+Answer code
+
+```{r}
+major = admissions[1:6,1]
+men = admissions[1:6,]
+women =admissions[7:12,]
+H = (men$Number*men$Percent/100 + women$Number*women$Percent/100) / (men$Number+women$Number)
+min(H)
+```
+Confounding Exercises #5
+1 point possible (graded)
+For men, what is the correlation between the number of applications across majors and H?
+
+Answer code
+
+```{r}
+cor(H,men$Number)
+
+```
+Confounding Exercises #6
+1 point possible (graded)
+For women, what is the correlation between the number of applications across majors and H?
+
+
+```{r}
+cor(H,women$Number)
+
+```
+
+Confounding in Genomics Exercises
+
+
+Load the data for this gene expression dataset:
+
+```{r}
+library(Biobase)
+library(GSE5859)
+data(GSE5859)
+```
+Note that this is the original dataset from which we selected the subset used in GSE5859Subset.  You can obtain it from the genomicsclass GitHub repository:
+
+```{r}
+library(devtools)
+install_github("genomicsclass/GSE5859")
+```
+We can extract the gene expression data and sample information table using the Bioconductor functions exprs() and pData() like this:
+
+```{r}
+geneExpression = exprs(e)
+sampleInfo = pData(e)
+```
+
+Note that we will learn much more about how these Bioconductor functions work in later courses.
+
+Confounding in Genomics Exercises #1
+0.0/1.0 point (graded)
+Familiarize yourself with the sampleInfo table. Note that some samples were processed at different times. This is an extraneous variable and should not affect the values in geneExpression. However, as we have seen in previous analyses, it does appear to have an effect, so we will explore this here.
+
+You can extract the year from each date like this:
+
+```{r}
+year = format(sampleInfo$date,"%y")
+
+```
+
+Note there are
+
+```{r}
+length( unique(year) )
+
+```
+
+unique years for which we have data.
+
+For how many of these years do we have more than one ethnicity represented?
+
+Answer code
+
+```{r}
+tab = table(year,sampleInfo$ethnicity)
+print(tab)
+x = rowSums( tab != 0)
+sum( x >= 2)
+```
+
+Confounding in Genomics Exercises #2
+0.0/1.0 point (graded)
+Repeat the above exercise but now instead of year consider the month as well. Specifically, instead of the year variable defined above, use:
+
+```{r}
+month.year = format(sampleInfo$date,"%m%y")
+
+```
+For what proportion of these month.year values do we have more than one ethnicity represented?
+
+Answer code 
+
+```{r}
+tab = table(month.year,sampleInfo$ethnicity)
+print(tab)
+x = rowSums( tab != 0)
+mean( x >= 2)
+```
+Note that this implies that month.year and ethnicity are almost completely confounded. This means that it is hard to separate effects due to date from effects due to our outcome of interest.
+
+Confounding in Genomics Exercises #3
+2 points possible (graded)
+Perform a t-test (use rowttests() from the genefilter package) comparing CEU samples processed in 2002 to those processed in 2003. Then use the qvalue package to obtain q-values for each gene.
+
+How many genes have q-values < 0.05?
+
+Answer code 
+```{r}
+library(qvalue)
+library(genefilter)
+year = factor( format(sampleInfo$date,"%y") )
+index = which(year%in% c("02","03") & sampleInfo$ethnicity=="CEU")
+year = droplevels(year[index])
+pval = rowttests(geneExpression[ ,index], year)$p.value
+qval = qvalue(pval)
+sum(qval$qvalue < 0.05)
+
+```
+What is the estimate of pi0 provided by qvalue()?
+
+
+Answer code
+
+```{r}
+print( qvalue(pval)$pi0 )
+
+```
+Note that the estimated percentage of genes that are differentially expressed is above 30%. This is one way to show the magnitude of the effect processing date has on the measurements.
+
+
+Confounding in Genomics Exercises #4
+1 point possible (graded)
+Now perform a t-test (use rowttests()) comparing CEU samples processed in 2003 to CEU samples processed in 2004. Then use the qvalue package to obtain q-values for each gene.
+
+How many genes have q-values < 0.05?
+
+Answer code 
+
+```{r}
+library(qvalue)
+library(genefilter)
+year = factor( format(sampleInfo$date,"%y") )
+index = which(year%in% c("03","04")  & sampleInfo$ethnicity=="CEU")
+year = droplevels(year[index])
+pval = rowttests(geneExpression[ ,index], year)$p.value
+qval = qvalue(pval)
+sum(qval$qvalue < 0.05)
+```
+Here we confirm the processing date has an effect on our measurements.
+
+Confounding in Genomics Exercises #5
+1 point possible (graded)
+Now we are going to compare ethnicities as was done in the original publication in which these data were first presented. Use the rowttests() function to compare the ASN population to the CEU population. Once again, use the qvalue() function to obtain q-values.
+
+How many genes have q-values < 0.05?
+
+Answer code 
+
+```{r}
+library(qvalue)
+library(genefilter)
+index = which(sampleInfo$ethnicity%in% c("CEU","ASN"))
+g = droplevels(sampleInfo$ethnicity[index])
+pval = rowttests(geneExpression[ ,index], g)$p.value
+qval = qvalue(pval)
+sum(qval$qvalue < 0.05)
+```
+Confounding in Genomics Exercises #6
+1 point possible (graded)
+Note that over 80% of genes are called differentially expressed between ethnic groups. However, due to the confounding with processing date, we need to confirm these differences are actually due to ethnicity. This will not be easy due to the almost perfect confounding. However, above we noted that two groups were represented in 2005. Just like we stratified by majors to remove the "major effect" in our admissions example, here we can stratify by year and perform a t-test comparing ASN and CEU, but only for samples processed in 2005.
+
+How many genes have q-values < 0.05?
+
+Answer code
+
+```{r}
+library(qvalue)
+library(genefilter)
+year = factor( format(sampleInfo$date,"%y") )
+index = which(sampleInfo$ethnicity%in% c("CEU","ASN") & year=="05")
+g = droplevels(sampleInfo$ethnicity[index])
+pval = rowttests(geneExpression[ ,index], g)$p.value
+qval = qvalue(pval)
+sum(qval$qvalue < 0.05)
+
+```
+
+Note the dramatic drop in the number of genes with q-value < 0.05 when we fix the year. However, the sample size is much smaller in this latest analysis which means we have less power:
+
+```{r}
+table(sampleInfo$ethnicity[index])
+
+```
+Confounding in Genomics Exercises #7
+1 point possible (graded)
+To provide a more balanced comparison, we repeat the analysis but now by taking 3 random CEU samples from 2002. Repeat the analysis above but comparing the ASN from 2005 to three random CEU samples from 2002. Set the seed at 3, set.seed(3), before random sampling.
+
+How many genes have q-values < 0.05?
+
+Answer code
+
+```{r}
+library(qvalue)
+library(genefilter)
+year = factor( format(sampleInfo$date,"%y") )
+index1 = which(sampleInfo$ethnicity=="ASN" & year=="05")
+set.seed(3)
+index2 = sample( which(sampleInfo$ethnicity == "CEU" & year=="02"), 3)
+index = c( index1, index2)
+g = droplevels(sampleInfo$ethnicity[index])
+pval = rowttests(geneExpression[ ,index], g)$p.value
+qval = qvalue(pval)
+sum(qval$qvalue < 0.05)
+```
+
+Modeling Batch Effects Exercises
+
+For the dataset we have been working with, models do not help due to the almost perfect confounding. This is one reason we created the subset dataset:
+
+```{r}
+library(GSE5859Subset)
+data(GSE5859Subset)
+```
+Here we purposely confounded month and group (sex) but not completely:
+
+```{r}
+sex = sampleInfo$group
+month = factor( format(sampleInfo$date,"%m"))
+table( sampleInfo$group, month)
+```
+Modeling Batch Effects Exercises #1
+1 point possible (graded)
+Using the functions rowttests() and qvalue() compare the two groups, in this case males and females coded in sex. Because this is a smaller dataset, which decreases our power, we will use a more lenient FDR cut-off of 10%.
+
+How many gene have q-values less than 0.1?
+
+Answer code
+
+```{r}
+library(qvalue)
+library(genefilter)
+pvals = rowttests(geneExpression,factor(sampleInfo$g))$p.value
+qvals = qvalue(pvals)$qvalues
+sum(qvals<0.1)
+```
+Modeling Batch Effects Exercises #2
+1 point possible (graded)
+Note that sampleInfo$group here represents males and females. Thus we expect differences to be on chrY and, for genes that escape inactivation, chrX. Note that we do not expect many autosomal genes to be different between males and females. This gives us an opportunity to evaluate false and true positives with experimental data. For example, we evaluate results using the proportion genes of the list that are on chrX or chrY.
+
+For the list of genes with q<0.1 calculated in Modeling Batch Effects Exercises #1, what proportion of genes are on chrX or chrY?
+
+Answer code
+
+```{r}
+index = geneAnnotation$CHR[qvals<0.1]%in%c("chrX","chrY")
+mean(index)
+
+```
+Modeling Batch Effects Exercises #3
+1 point possible (graded)
+Now for the autosomal genes (not on chrX and chrY) for which q-value < 0.1 perform a t-test comparing samples processed in June to those processed in October.
+
+What proportion of these have p-values < 0.05?
+
+Answer code
+
+```{r}
+index = which(qvals<0.1 & !geneAnnotation$CHR%in%c("chrX","chrY"))
+month = factor( format(sampleInfo$date,"%m"))
+pvals = rowttests(geneExpression[index,],month)$p.value
+mean(pvals<0.05)
+
+```
+
+Modeling Batch Effects Exercises #5
+1 point possible (graded)
+Now use the X defined above to fit a regression model using lm for each gene. Note that you can obtain p-values for estimated parameters using summary(). Here is an example:
+
+```{r}
+X = model.matrix(~sex+month)
+i = 234
+y = geneExpression[i,]
+fit = lm(y~X-1)
+summary(fit)$coef
+```
+
+How many of the q-values for the group comparison are <0.1 now?
+
+Answer code
+
+```{r}
+library(qvalue)
+pvals = sapply(1:nrow(geneExpression),function(i){
+    y = geneExpression[i,]
+    fit = lm(y~X-1) 
+    summary(fit)$coef[2,4]
+})
+qvals = qvalue(pvals)$qvalue
+sum(qvals<0.1)
+```
+Note the big drop from what we obtained without the correction.
+
+Also note that this code is suboptimal. Later we will learn faster ways of making this computation.
+
+Modeling Batch Effects Exercises #6
+1 point possible (graded)
+With this new list, what proportion of these are chrX and chrY?
+
+
+Answer code
+
+```{r}
+index = geneAnnotation$CHR[qvals<0.1]%in%c("chrX","chrY")
+mean(index)
+```
+Modeling Batch Effects Exercises #7
+1 point possible (graded)
+Now, from the linear model in Modeling Batch Effects Exercises #6, extract the p-values related to the coefficient representing the October versus June differences using the same linear model.
+
+How many of the q-values for the month comparison are < 0.1 now?
+
+
+Answer code
+
+```{r}
+pvals = sapply(1:nrow(geneExpression),function(i){
+  y = geneExpression[i,]
+  fit = lm(y~X)
+  summary(fit)$coef[3,4]
+})
+qvals = qvalue(pvals)$qvalue
+sum(qvals<0.1)
+```
+Factor Analysis Exercises
+
+
+We will continue to use this dataset:
+
+```{r}
+library(Biobase)
+library(GSE5859Subset)
+data(GSE5859Subset)
+```
+
+and define
+
+```{r}
+y = geneExpression - rowMeans(geneExpression)
+
+```
+Compute and plot an image of the correlation for each sample. Make two image plots of these correlations. In the first one, plot the correlation as image. In the second, order the samples by date and then plot the an image of the correlation. The only difference in these plots is the order in which the samples are plotted.
+
+Answer code 
+
+```{r}
+##simple version
+library(rafalib)
+sex = sampleInfo$group
+mypar(1,2)
+cors = cor(y)
+image(cors)
+o = order(sampleInfo$date)
+image(cors[o,o])
+        
+##advanced version
+library(rafalib)
+sex = sampleInfo$group
+mypar(1,2)
+cols=colorRampPalette(rev(brewer.pal(11,"RdBu")))(100)
+cors = cor(y)
+image(1:ncol(y),1:ncol(y),cors,col=cols,zlim=c(-1,1),
+       xaxt="n",xlab="",yaxt="n",ylab="")
+axis(2,1:ncol(y),sex,las=2)
+axis(1,1:ncol(y),sex,las=2)
+o = order(sampleInfo$date)
+image(1:ncol(y),1:ncol(y),cors[o,o],col=cols,zlim=c(-1,1),
+      xaxt="n",xlab="",yaxt="n",ylab="")
+label = gsub("2005-","",sampleInfo$date[o])
+axis(2,1:ncol(y),label,las=2)
+axis(1,1:ncol(y),label,las=2)
+```
+
+Factor Analysis Exercises #2
+1 point possible (graded)
+Based on the correlation plots above, we could argue that there are at least two hidden factors. Using PCA estimate these two factors. Specifically, apply the svd() to y and use the first two PCs as estimates.
+
+Which command gives us these estimates?
+
+Answer code
+
+```{r}
+
+```
+
+Factor Analysis Exercises #3
+1/1 point (graded)
+Plot each of the estimated factor ordered by date. Use color to denote month. The first factor is clearly related to date.
+
+Which of the following appear to be most different according to this factor?
+
+Answer code 
+
+```{r}
+pcs = svd(y)$v[,1:2]
+o = order(sampleInfo$date)
+cols = as.numeric(month)[o]
+mypar(2,1)
+for(i in 1:2){
+  plot(pcs[o,i],col=cols,xaxt="n",xlab="")
+  label = gsub("2005-","",sampleInfo$date[o])
+  axis(1,1:ncol(y),label,las=2)
+```
+
+Factor Analysis Exercises #4
+1 point possible (graded)
+Use the svd() function to obtain the principal components (PCs) for our detrended gene expression data y.
+
+How many principal components (PCs) explain more than 10% each of the variability?
+
+Answer code
+
+
+```{r}
+s = svd(y)
+varexplained = s$d^2/ sum(s$d^2)
+plot(varexplained)
+sum(varexplained>0.10)
+
+```
+Factor Analysis Exercises #5
+2 points possible (graded)
+Which PC most correlates (negative or positive correlation) with month?
+
+Answer code
+
+```{r}
+month = factor( format(sampleInfo$date,"%m"))
+cors = cor( as.numeric(month),s$v)
+plot(t(cors))
+which.max(abs(cors))
+
+```
+What is this correlation (in absolute value)?
+
+
+Answer code
+```{r}
+max(abs(cors))
+
+```
+Factor Analysis Exercises #6
+2 points possible (graded)
+Which PC most correlates (negative or positive correlation) with sex?
+
+Answer code
+
+```{r}
+sex = sampleInfo$group
+cors = cor( sex,s$v)
+plot(t(cors))
+which.max(abs(cors))
+
+```
+What is this correlation (in absolute value)?
+```{r}
+max(abs(cors))
+
+```
+
+Factor Analysis Exercises #7
+2 points possible (graded)
+Now instead of using month, which we have shown does not quite describe the batch, add the two estimated factors in Factor Analysis Exercises #6 to the linear model we used in previous exercises:
+
+```{r}
+X <- model.matrix(~sex+s$v[,1:2])
+
+```
+
+Apply this model to each gene, and compute q-values for the sex difference.
+
+How many q-values are <0.1 for the sex comparison?
+
+Answer code
+
+```{r}
+X= model.matrix(~sex+s$v[,1:2])
+pvals = sapply(1:nrow(geneExpression),function(i){
+  y = geneExpression[i,]
+  fit = lm(y~X-1)
+  summary(fit)$coef[2,4]
+})
+qvals = qvalue(pvals)$qvalue
+sum(qvals<0.1)
+
+```
+
+What proportion of the genes are on chrX and chrY?
+
+```{r}
+index = geneAnnotation$CHR[qvals<0.1]%in%c("chrX","chrY")
+mean(index)
+```
+
+SVA Exercises
+
+
+In this section we will use the sva() function in the sva package and apply it to the following data:
+
+```{r}
+library(sva)
+library(Biobase)
+library(GSE5859Subset)
+data(GSE5859Subset)
+```
+
+SVA Exercises #1
+1 point possible (graded)
+In the previous section we estimated factors using PCA. But we noted that the first factor was correlated with our outcome of interest:
+
+```{r}
+s <- svd(geneExpression-rowMeans(geneExpression))
+cor(sampleInfo$group,s$v[,1])
+
+```
+As in the previous questions we are interested in finding genes that are differentially expressed between the two groups (males and females in this case). Here we learn to use SVA to estimate these effects while using a factor analysis approach to account for batch effects.
+
+The svafit() function estimates factors, but downweighting the genes that appear to correlate with the outcome of interest. It also tries to estimate the number of factors and returns the estimated factors like this:
+
+```{r}
+sex = sampleInfo$group
+mod = model.matrix(~sex)
+svafit = sva(geneExpression,mod)
+head(svafit$sv)
+```
+Note that the resulting estimated factors are not that different from the PCs:
+
+```{r}
+for(i in 1:ncol(svafit$sv)){
+  print( cor(s$v[,i],svafit$sv[,i]) )
+}
+
+```
+Now fit a linear model to estimate the difference between males and females for each gene but that instead of accounting for batch effects using month it includes the factors estimated by sva in the model. Use the qvalue() function to estimate q-values.
+
+How many genes have q-value < 0.1?
+
+Answer code
+
+```{r}
+library(qvalue)
+library(sva)
+X= model.matrix(~sex+svafit$sv)
+pvals = sapply(1:nrow(geneExpression),function(i){
+  y = geneExpression[i,]
+  fit = lm(y~X-1)
+  summary(fit)$coef[2,4]
+})
+qvals = qvalue(pvals)$qvalue
+sum(qvals<0.1)
+```
+
+SVA Exercises #2
+1 point possible (graded)
+What proportion of the genes from SVA Exercises #1 are from chrY or chrX?
+
+Answer code
+
+```{r}
+index = geneAnnotation$CHR[qvals<0.1]%in%c("chrX","chrY")
+mean(index)
+```
+
+Remember that we should always perform exploratory data analysis to check problems. For example, before reporting this list of genes we could look at a volcano plot like this:
+
+```{r}
+res = sapply(1:nrow(geneExpression),function(i){
+	y = geneExpression[i,]
+	fit = lm(y~X-1)
+	summary(fit)$coef[2,c(1,4)]
+})
+
+qvals = qvalue(res[2,])$qvalue
+pcutoff = max( res[2,qvals < .1] )
+library(rafalib)
+mypar2(1,1)
+
+plot(res[1,],-log10(res[2,]),xlab="M",ylab="log10 p-value")
+
+ind = which(geneAnnotation$CHR=="chrY")
+points(res[1,ind],-log10(res[2,ind]),col=1,pch=16)
+
+ind = which(geneAnnotation$CHR=="chrX")
+points(res[1,ind],-log10(res[2,ind]),col=2,pch=16)
+
+abline(h=-log10(pcutoff))
+legend("bottomleft",c("chrX","chrY"),col=c(2,1),pch=16)
+```
+

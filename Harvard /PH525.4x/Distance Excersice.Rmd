@@ -1,0 +1,57 @@
+---
+title: "High-Dimensional Data Analysis week1 Distance Exercise"
+output: html_notebook
+---
+
+Distance Exercises #1
+1 point possible (graded)
+If you have not done so already, install the data package tissuesGeneExpression.
+
+```{r}
+library(devtools)
+install_github("genomicsclass/tissuesGeneExpression")
+```
+The data represents RNA expression levels for seven tissues, each with several biological replicates. We call samples that we consider to be from the same population, such as liver tissue from different individuals, biological replicates:
+
+```{r}
+library(tissuesGeneExpression)
+data(tissuesGeneExpression)
+head(e)
+head(tissue)
+```
+How many biological replicates are there for hippocampus?
+
+```{r}
+sum(tissue=="hippocampus")
+##to answer this question for all tissues look at
+table(tissue)
+```
+Distance Exercises #2
+1 point possible (graded)
+What is the distance between samples 3 and 45?
+
+```{r}
+sqrt( crossprod(e[,3]-e[,45]) )
+## or
+sqrt( sum((e[,3]-e[,45])^2 ))
+```
+Distance Exercises #3
+1 point possible (graded)
+What is the distance between gene 210486_at and 200805_at?
+
+```{r}
+sqrt( crossprod(e["210486_at",]-e["200805_at",]) )
+## or
+sqrt( sum((e["210486_at",]-e["200805_at",])^2 ))
+```
+Distance Exercises #4
+1 point possible (graded)
+If I run the command (don't run it!):
+
+```{r}
+d = as.matrix(dist(e))
+
+```
+How many cells (number of rows times number of columns) would this matrix have?
+
+
